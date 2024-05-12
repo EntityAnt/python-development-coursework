@@ -1,6 +1,6 @@
-import masks
 from datetime import datetime
 
+from src import masks
 
 
 def get_number_from_string(string: str) -> str:
@@ -9,8 +9,8 @@ def get_number_from_string(string: str) -> str:
     Возвращает исходную строку с замаскированным номером карты/счета.
     """
     tmp_list = string.strip().split()
-    if tmp_list[0] == 'Счет':
-        return f'Счет {masks.get_account_mask(tmp_list[-1])}'
+    if tmp_list[0] == "Счет":
+        return f"Счет {masks.get_account_mask(tmp_list[-1])}"
     return f'{" ".join(tmp_list[0:-1])} {masks.get_card_number_mask(tmp_list[-1])}'
 
 
@@ -19,7 +19,7 @@ def get_date_from_str(str_date: str) -> str:
     Функция, принимает строку вида 2018-07-11T02:26:18.671407
     и возвращает строку с датой в виде 11.07.2018.
     """
-    return str(datetime.strptime(str_date.split('T')[0], "%Y-%m-%d").strftime('%d.%m.%Y'))
+    return str(datetime.strptime(str_date.split("T")[0], "%Y-%m-%d").strftime("%d.%m.%Y"))
 
 
 def get_first_equal_last(str_list: list[str]) -> list[str]:
@@ -54,9 +54,9 @@ def get_maximum_multiplication(num_list: list[int]) -> int:
 
 
 if __name__ == "__main__":
-    print(get_number_from_string('Visa Classic 6831982476737658'))
-    print(get_number_from_string('Maestro 1596837868705199'))
-    print(get_number_from_string('Счет 64686473678894779589'))
-    print(get_date_from_str('2018-07-11T02:26:18.671407'))
-    print(get_first_equal_last(['', 'madam', 'racecar', 'noon', 'level', '']))
+    print(get_number_from_string("Visa Classic 6831982476737658"))
+    print(get_number_from_string("Maestro 1596837868705199"))
+    print(get_number_from_string("Счет 64686473678894779589"))
+    print(get_date_from_str("2018-07-11T02:26:18.671407"))
+    print(get_first_equal_last(["", "madam", "racecar", "noon", "level", ""]))
     print(get_maximum_multiplication([-5, -7, -9, -13]))
