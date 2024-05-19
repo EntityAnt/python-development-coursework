@@ -43,4 +43,4 @@ def counting_files_and_directories(path: str = "", recursive: bool = False) -> d
 if __name__ == "__main__":
     print(get_card_number_mask("7000792289606361"))
     print(get_account_mask("73654108430135874305"))
-    print(counting_files_and_directories())
+    print(counting_files_and_directories(path=os.getcwd(), recursive=False))
