@@ -20,7 +20,7 @@ def test_get_account_mask(account: str, expected: str) -> None:
 
 @pytest.mark.parametrize(
     "path, recursive, expected",
-    [(os.getcwd(), False, {"files": 3, "folders": 1}), (os.getcwd(), True, {"files": 6, "folders": 1})],
+    [(os.getcwd(), False, {"files": 3, "folders": 1}), (os.getcwd(), True, {"files": 7, "folders": 1})],
 )
 def test_counting_files_and_directories(path: str, recursive: bool, expected: str) -> None:
     assert counting_files_and_directories(path, recursive=recursive) == expected
