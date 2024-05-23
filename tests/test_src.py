@@ -1,5 +1,3 @@
-import os
-
 import pytest
 
 from src.masks import counting_files_and_directories, get_account_mask, get_card_number_mask
@@ -19,11 +17,11 @@ def test_get_account_mask(account: str, expected: str) -> None:
 
 
 @pytest.mark.parametrize(
-    "path, recursive, expected",
-    [(os.getcwd(), False, {"files": 3, "folders": 1}), (os.getcwd(), True, {"files": 7, "folders": 1})],
+    "recursive, expected",
+    [(False, {"files": 5, "folders": 1}), (True, {"files": 9, "folders": 1})],
 )
-def test_counting_files_and_directories(path: str, recursive: bool, expected: str) -> None:
-    assert counting_files_and_directories(path, recursive=recursive) == expected
+def test_counting_files_and_directories(recursive: bool, expected: str) -> None:
+    assert counting_files_and_directories(recursive=recursive) == expected
 
 
 # +++++++++++++++++++++++ Для widget ++++++++++++++++++++++++++++++++
@@ -47,14 +45,14 @@ def test_get_date_from_str() -> None:
 
 
 def test_filter_for_dict(
-    get_list_dict: list[dict], get_list_dict_executed: list[dict], get_list_dict_canceled: list[dict]
+        get_list_dict: list[dict], get_list_dict_executed: list[dict], get_list_dict_canceled: list[dict]
 ) -> None:
     assert filter_for_dict(get_list_dict) == get_list_dict_executed
     assert filter_for_dict(get_list_dict, "CANCELED") == get_list_dict_canceled
 
 
 def test_sort_list_to_date(
-    get_list_dict: list[dict], get_sort_list_to_date_true: list[dict], get_sort_list_to_date_false: list[dict]
+        get_list_dict: list[dict], get_sort_list_to_date_true: list[dict], get_sort_list_to_date_false: list[dict]
 ) -> None:
     assert sort_list_to_date(get_list_dict) == get_sort_list_to_date_true
     assert sort_list_to_date(get_list_dict, reverse=False) == get_sort_list_to_date_false
