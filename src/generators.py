@@ -79,15 +79,25 @@ transactions = (
 )
 
 
-def filter_by_currency(transactions_list, currency):
-    transactions_by_currency = filter(lambda trans: trans['operationAmount']['currency']['code'] == currency, transactions_list)
+def filter_by_currency(transactions_list: list[dict], currency: str) -> dict:
+    transactions_by_currency = filter(lambda item: item['operationAmount']['currency']['code'] == currency,
+                                      transactions_list)
     for trans in transactions_by_currency:
         yield trans
 
 
-def transaction_descriptions(transactions_list):
+def transaction_descriptions(transactions_list: list[dict]) -> str:
     for trans in transactions_list:
         yield trans['description']
+
+
+def card_number_generator(start: int, end: int) -> list[str]:
+    card_numbers = ['0' * (16 - len(str(i))) + str(i) for i in list(range(start, end + 1))]
+    card_numbers_str = []
+    for card_num in card_numbers:
+        card_numbers_str.append(f'{card_num[:4]} {card_num[4:8]} {card_num[8:12]} {card_num[12:]}')
+
+    return card_numbers_str
 
 
 if __name__ == '__main__':
@@ -100,3 +110,6 @@ if __name__ == '__main__':
 
     for _ in range(5):
         print(next(descriptions))
+
+    for card_number in card_number_generator(1000033334444, 1000033334449):
+        print(card_number)
