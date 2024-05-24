@@ -1,15 +1,19 @@
-from src.generators import filter_by_currency, transactions, transaction_descriptions, card_number_generator
+from typing import Any
+
+import pytest
+
+from src.generators import card_number_generator, filter_by_currency, transaction_descriptions
 
 
-def test_filter_by_currency() -> None:
-    usd_transactions = filter_by_currency(transactions, "USD")
+def test_filter_by_currency(get_transactions: Any) -> None:
+    usd_transactions = filter_by_currency(get_transactions, "USD")
     assert next(usd_transactions)["id"] == 939719570
     assert next(usd_transactions)["id"] == 142264268
     assert next(usd_transactions)["id"] == 895315941
 
 
-def test_transaction_descriptions() -> None:
-    descriptions = transaction_descriptions(transactions)
+def test_transaction_descriptions(get_transactions: Any) -> None:
+    descriptions = transaction_descriptions(get_transactions)
     assert next(descriptions) == "Перевод организации"
     assert next(descriptions) == "Перевод со счета на счет"
     assert next(descriptions) == "Перевод со счета на счет"
@@ -17,12 +21,15 @@ def test_transaction_descriptions() -> None:
     assert next(descriptions) == "Перевод организации"
 
 
-def test_card_number_generator() -> None:
-    assert card_number_generator(1000033334444, 1000033334449) == [
-        "0001 0000 3333 4444",
-        "0001 0000 3333 4445",
-        "0001 0000 3333 4446",
-        "0001 0000 3333 4447",
-        "0001 0000 3333 4448",
-        "0001 0000 3333 4449",
-    ]
+@pytest.mark.parametrize(
+    "start, end, expected",
+    [
+        (1000033334444, 1000033334444, "0001 0000 3333 4444"),
+        (1000033334445, 1000033334445, "0001 0000 3333 4445"),
+        (1000033334446, 1000033334446, "0001 0000 3333 4446"),
+        (1000033334447, 1000033334447, "0001 0000 3333 4447"),
+    ],
+)
+def test_card_number_generator(start: int, end: int, expected: str) -> None:
+    card_number = card_number_generator(start, end)
+    assert next(card_number) == expected

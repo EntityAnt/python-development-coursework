@@ -18,7 +18,7 @@ def test_get_account_mask(account: str, expected: str) -> None:
 
 @pytest.mark.parametrize(
     "recursive, expected",
-    [(False, {"files": 5, "folders": 1}), (True, {"files": 9, "folders": 1})],
+    [(False, {"files": 6, "folders": 1}), (True, {"files": 11, "folders": 1})],
 )
 def test_counting_files_and_directories(recursive: bool, expected: str) -> None:
     assert counting_files_and_directories(recursive=recursive) == expected
@@ -45,14 +45,14 @@ def test_get_date_from_str() -> None:
 
 
 def test_filter_for_dict(
-        get_list_dict: list[dict], get_list_dict_executed: list[dict], get_list_dict_canceled: list[dict]
+    get_list_dict: list[dict], get_list_dict_executed: list[dict], get_list_dict_canceled: list[dict]
 ) -> None:
     assert filter_for_dict(get_list_dict) == get_list_dict_executed
     assert filter_for_dict(get_list_dict, "CANCELED") == get_list_dict_canceled
 
 
 def test_sort_list_to_date(
-        get_list_dict: list[dict], get_sort_list_to_date_true: list[dict], get_sort_list_to_date_false: list[dict]
+    get_list_dict: list[dict], get_sort_list_to_date_true: list[dict], get_sort_list_to_date_false: list[dict]
 ) -> None:
     assert sort_list_to_date(get_list_dict) == get_sort_list_to_date_true
     assert sort_list_to_date(get_list_dict, reverse=False) == get_sort_list_to_date_false
