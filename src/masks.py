@@ -22,7 +22,8 @@ def counting_files_and_directories(path: str = "", recursive: bool = False) -> d
     files = 0
     folders = 0
     if not os.path.isdir(path):
-        path = os.getcwd()
+        path = os.path.dirname(os.path.abspath(__file__))
+    print(f"{path=}")
     if recursive:
         tree = os.walk(path)
         for dir, folder, file in tree:
@@ -40,7 +41,7 @@ def counting_files_and_directories(path: str = "", recursive: bool = False) -> d
     return res_dict
 
 
-if __name__ == "__main__":
-    print(get_card_number_mask("7000792289606361"))
-    print(get_account_mask("73654108430135874305"))
-    print(counting_files_and_directories())
+# if __name__ == "__main__":
+#     print(get_card_number_mask("7000792289606361"))
+#     print(get_account_mask("73654108430135874305"))
+#     print(counting_files_and_directories(recursive=False))
