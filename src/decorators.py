@@ -1,5 +1,4 @@
 import os
-import time
 from functools import wraps
 from typing import Any, Callable
 
@@ -35,7 +34,7 @@ def log(filename: str = "") -> None:
     return decorator
 
 
-@log()
+@log(filename='')
 def my_function(x: int, y: int) -> int:
     return x + y
 
