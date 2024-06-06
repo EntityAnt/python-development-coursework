@@ -11,7 +11,7 @@ def currency_exchange_rate(currency: str) -> float:
     """Принимает название валюты и возвращает ее курс к рублю"""
     response = requests.get(f"https://api.apilayer.com/fixer/latest?base={currency.upper()}&symbols=RUB",
                             params=headers)
-    return response.json()['rates']['RUB']
+    return response.json()
 
 
 if __name__ == '__main__':

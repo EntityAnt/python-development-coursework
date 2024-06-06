@@ -9,7 +9,7 @@ load_dotenv()
 PATH_TO_OPERATION_JSON = os.getenv('PATH_TO_OPERATION_JSON')
 
 
-def get_financial_transaction_data(path: str) -> list[dict]:
+def get_financial_transactions_data(path: str) -> list[dict]:
     """Принимает на вход путь до JSON-файла и возвращает список словарей с данными о финансовых транзакциях.
     Если файл пустой, содержит не список или не найден, функция возвращает пустой список."""
     try:
@@ -18,6 +18,7 @@ def get_financial_transaction_data(path: str) -> list[dict]:
                 json_data = json.load(file)
             except json.JSONDecodeError:
                 print('Ошибка декодирования файла')
+                return []
     except FileNotFoundError:
         print('Файл не найден!')
         return []
@@ -37,5 +38,7 @@ def get_amount(transaction: dict) -> float:
 
 
 if __name__ == '__main__':
-    transaction = get_financial_transaction_data(PATH_TO_OPERATION_JSON)[1]
+    transaction = get_financial_transactions_data(PATH_TO_OPERATION_JSON)[1]
+    print(transaction)
     print(get_amount(transaction))
+    print(get_financial_transactions_data(PATH_TO_OPERATION_JSON))
