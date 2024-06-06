@@ -96,5 +96,3 @@ def get_transactions() -> list[dict]:
             "to": "Счет 14211924144426031657",
         },
     ]
-
-
