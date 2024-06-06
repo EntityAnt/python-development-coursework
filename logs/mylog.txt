@@ -1,0 +1,5 @@
+my_function error: can only concatenate str (not "int") to str. Input ('1', 2), {}
+my_function error: can only concatenate str (not "int") to str. Input ('1', 2), {}
+my_function - OK
+my_function - OK
+my_function - OK
