@@ -15,4 +15,4 @@ def currency_exchange_rate(currency: str) -> float:
 
 
 if __name__ == '__main__':
-    print(currency_exchange_rate("EUR"))
+    print(currency_exchange_rate("USD"))
