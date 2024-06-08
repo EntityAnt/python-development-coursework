@@ -34,7 +34,7 @@ def log(filename: str = "") -> None:
     return decorator
 
 
-@log(filename='')
+@log(filename="")
 def my_function(x: int, y: int) -> int:
     return x + y
 
