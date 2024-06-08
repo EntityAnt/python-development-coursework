@@ -1,5 +1,6 @@
 import logging
 import os
+from datetime import datetime
 
 from dotenv import load_dotenv
 
@@ -11,8 +12,9 @@ load_dotenv()
 PATH_TO_OPERATION_JSON = os.getenv("PATH_TO_OPERATION_JSON")
 
 if __name__ == '__main__':
+    logger = setup_logging(datetime.today().strftime('%Y-%m-%d'))
+
     # Для masks
-    logger = setup_logging(__name__)
     logging.info('Запуск функций из модуля masks')
 
     get_card_number_mask("7000792289606361")
@@ -23,4 +25,3 @@ if __name__ == '__main__':
     logging.info('Запуск функций из модуля utils')
     transaction = get_financial_transactions_data(PATH_TO_OPERATION_JSON)[1]
     get_amount(transaction)
-
