@@ -1,16 +1,24 @@
+import logging
 import os
 
+from src.logger import setup_logging
+
+logger = setup_logging(__name__)
 
 def get_card_number_mask(num_card: str) -> str:
     """Функция принимает на вход номер карты и возвращает ее маску,
     в формате XXXX XX** **** XXXX"""
-    return f"{num_card[:4]} {num_card[4:6]}** **** {num_card[-4:]}"
+    result = f"{num_card[:4]} {num_card[4:6]}** **** {num_card[-4:]}"
+    logging.info(f'Создана маска для карты: {result}')
+    return result
 
 
 def get_account_mask(account: str) -> str:
     """Функция принимает на вход номер счета и возвращает его маску, в формате
     **XXXX"""
-    return f"**{account[-4:]}"
+    result = f"**{account[-4:]}"
+    logging.info(f'Создана маска для карты: {result}')
+    return result
 
 
 def counting_files_and_directories(path: str = "", recursive: bool = False) -> dict:
@@ -23,7 +31,7 @@ def counting_files_and_directories(path: str = "", recursive: bool = False) -> d
     folders = 0
     if not os.path.isdir(path):
         path = os.path.dirname(os.path.abspath(__file__))
-    print(f"{path=}")
+    logging.warning(f"Путь {path} не найден!")
     if recursive:
         tree = os.walk(path)
         for dir, folder, file in tree:
@@ -38,10 +46,7 @@ def counting_files_and_directories(path: str = "", recursive: bool = False) -> d
 
     res_dict["files"] = files
     res_dict["folders"] = folders
+    logging.info(f'Найдено {files} файлов и {folders} папок')
     return res_dict
 
 
-# if __name__ == "__main__":
-#     print(get_card_number_mask("7000792289606361"))
-#     print(get_account_mask("73654108430135874305"))
-#     print(counting_files_and_directories(recursive=False))
