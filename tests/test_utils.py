@@ -1,12 +1,14 @@
 import os
+from unittest.mock import patch
 
 import pytest
 from dotenv import load_dotenv
 
-from src.utils import get_financial_transactions_data
+from src.utils import get_financial_transactions_data, get_data_from_csv
 
 load_dotenv()
 PATH_TO_OPERATION_JSON = os.getenv("PATH_TO_OPERATION_JSON")
+PATH_TO_DATA = os.getenv("PATH_TO_DATA")
 TRASACTIONS_LIST = [
     {"amount": "31957.58", "currency": {"name": "руб.", "code": "RUB"}},
     {"amount": "8221.37", "currency": {"name": "USD", "code": "USD"}},
@@ -117,3 +119,36 @@ TRASACTIONS_LIST = [
 )
 def test_get_financial_transaction_data(path, expected) -> None:
     assert get_financial_transactions_data(path) == expected
+
+
+# @patch("csv.reader")
+# def test_get_data_from_csv(mock_get):
+#     mock_get.return_value.json.return_value = (
+#         ['id', 'state', 'date', 'amount', 'currency_name', 'currency_code', 'from', 'to', 'description'],
+#         ['650703', 'EXECUTED', '2023-09-05T11:30:32Z', '16210', 'Sol', 'PEN', 'Счет 58803664561298323391',
+#          'Счет 39745660563456619397', 'Перевод организации']
+#     )
+#     assert get_data_from_csv(os.path.join(PATH_TO_DATA, 'transactions.csv')) == [
+#         {
+#             "id": "650703",
+#             "state": "EXECUTED",
+#             "date": "2023-09-05T11:30:32Z",
+#             "amount": "16210",
+#             "currency_name": "Sol",
+#             "currency_code": "PEN",
+#             "from": "Счет 58803664561298323391",
+#             "to": "Счет 39745660563456619397",
+#             "description": "Перевод организации"
+#         },
+#         {
+#             "id": "3598919",
+#             "state": "EXECUTED",
+#             "date": "2020-12-06T23:00:58Z",
+#             "amount": "29740",
+#             "currency_name": "Peso",
+#             "currency_code": "COP",
+#             "from": "Discover 3172601889670065",
+#             "to": "Discover 0720428384694643",
+#             "description": "Перевод с карты на карту"
+#         }
+#     ]
