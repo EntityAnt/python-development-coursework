@@ -45,3 +45,5 @@ def get_amount(transaction: dict) -> float:
         result = round(float(transaction["amount"]) * rate, 2)
         logger.info(f"Получена транзакция на сумму {result} руб.")
     return result
+
+
