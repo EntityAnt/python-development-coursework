@@ -25,6 +25,6 @@ if __name__ == '__main__':
     logger.info('Запуск функций из модуля utils')
     # transaction = get_financial_transactions_data(PATH_TO_OPERATION_JSON)[3]
     # get_amount(transaction)
-    print(get_data_from_csv(os.path.join(PATH_TO_DATA, 'transactions.csv')))
-    # print(get_data_from_excel(os.path.join(PATH_TO_DATA, 'transactions_excel.xlsx')))
+    # print(get_data_from_csv(os.path.join(PATH_TO_DATA, 'transactions.csv')))
+    print(get_data_from_excel(os.path.join(PATH_TO_DATA, 'transactions_excel.xlsx')))
 

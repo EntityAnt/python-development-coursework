@@ -67,4 +67,3 @@ def get_data_from_excel(file_name: str) -> list[dict]:
     """Читает данные и excel-файла и возвращает список словарей."""
     res = pd.read_excel(file_name).to_json(orient="records", indent=4, force_ascii=False)
     return json.loads(res)
-
