@@ -49,22 +49,22 @@ def get_amount(transaction: dict) -> float:
     return result
 
 
-def get_data_from_csv(file_name: str) -> str:
-    """Читает данные и csv-файла и возвращает json с данными."""
+def get_data_from_csv(file_name: str) -> list[dict]:
+    """Читает данные и csv-файла и возвращает список словарей."""
     with open(file_name, "r", encoding="utf-8") as file:
         reader = csv.reader(file, delimiter=";")
         header = next(reader)
-        print(header)
         result = []
         for row in reader:
             row_dict = dict()
             for idx, item in enumerate(header):
                 row_dict[item] = row[idx]
             result.append(row_dict)
-    return json.dumps(result, indent=4, ensure_ascii=False)
+    return result
 
 
-def get_data_from_excel(file_name: str) -> str:
-    """Читает данные и excel-файла и возвращает json с данными."""
+def get_data_from_excel(file_name: str) -> list[dict]:
+    """Читает данные и excel-файла и возвращает список словарей."""
     res = pd.read_excel(file_name).to_json(orient="records", indent=4, force_ascii=False)
-    return res
+    return json.loads(res)
+
