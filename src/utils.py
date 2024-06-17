@@ -1,9 +1,9 @@
 import csv
 import json
 import os
-import pandas as pd
 from datetime import datetime
 
+import pandas as pd
 from dotenv import load_dotenv
 
 from src.external_api import currency_exchange_rate
@@ -11,6 +11,7 @@ from src.logger import setup_logging
 
 load_dotenv()
 PATH_TO_OPERATION_JSON = os.getenv("PATH_TO_OPERATION_JSON")
+PATH_TO_DATA = os.getenv("PATH_TO_DATA")
 
 logger = setup_logging(datetime.today().strftime("%Y-%m-%d"))
 
@@ -65,5 +66,6 @@ def get_data_from_csv(file_name: str) -> list[dict]:
 
 def get_data_from_excel(file_name: str) -> list[dict]:
     """Читает данные и excel-файла и возвращает список словарей."""
+
     res = pd.read_excel(file_name).to_json(orient="records", indent=4, force_ascii=False)
     return json.loads(res)

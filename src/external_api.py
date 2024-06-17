@@ -15,5 +15,3 @@ def currency_exchange_rate(currency: str) -> float:
     return float(response.json()["rates"]["RUB"])
 
 
-if __name__ == "__main__":
-    print(currency_exchange_rate("USD"))

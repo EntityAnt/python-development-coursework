@@ -1,11 +1,12 @@
 import os
+from io import StringIO
 from unittest.mock import patch
 
 import pandas as pd
 import pytest
 from dotenv import load_dotenv
 
-from src.utils import get_financial_transactions_data, get_data_from_csv, get_data_from_excel
+from src.utils import get_data_from_csv, get_data_from_excel, get_financial_transactions_data
 
 load_dotenv()
 PATH_TO_OPERATION_JSON = os.getenv("PATH_TO_OPERATION_JSON")
@@ -122,16 +123,27 @@ def test_get_financial_transaction_data(path, expected) -> None:
     assert get_financial_transactions_data(path) == expected
 
 
-@patch('csv.reader')
+@patch("csv.reader")
 def test_get_data_from_csv(mock_reader):
     # Настраиваем mock_reader чтобы он возвращал нужный результат
-    mock_reader.return_value = iter([
-        ['id', 'state', 'date', 'amount', 'currency_name', 'currency_code', 'from', 'to', 'description'],
-        ['650703', 'EXECUTED', '2023-09-05T11:30:32Z', '16210', 'SoL', 'PEN', 'Счет 58803664651298323391',
-         'Счет 39746506635466619397', 'Перевод организации']
-    ])
+    mock_reader.return_value = iter(
+        [
+            ["id", "state", "date", "amount", "currency_name", "currency_code", "from", "to", "description"],
+            [
+                "650703",
+                "EXECUTED",
+                "2023-09-05T11:30:32Z",
+                "16210",
+                "SoL",
+                "PEN",
+                "Счет 58803664651298323391",
+                "Счет 39746506635466619397",
+                "Перевод организации",
+            ],
+        ]
+    )
 
-    result = get_data_from_csv(os.path.join(PATH_TO_DATA, 'transactions.csv'))
+    result = get_data_from_csv(os.path.join(PATH_TO_DATA, "transactions.csv"))
     expected_result = [
         {
             "id": "650703",
@@ -142,42 +154,28 @@ def test_get_data_from_csv(mock_reader):
             "currency_code": "PEN",
             "from": "Счет 58803664651298323391",
             "to": "Счет 39746506635466619397",
-            "description": "Перевод организации"
+            "description": "Перевод организации",
         }
     ]
     assert result == expected_result
 
 
-@patch('pandas.read_excel.to_json()')
+@patch("pandas.read_excel")
 def test_get_data_from_excel(mock_reader):
-    mock_reader.return_value = [{
-        "id": 650703.0,
-        "state": "EXECUTED",
-        "date": "2023-09-05T11:30:32Z",
-        "amount": 16210.0,
-        "currency_name": "Sol",
-        "currency_code": "PEN",
-        "from": "Счет 58803664561298323391",
-        "to": "Счет 39745660563456619397",
-        "description": "Перевод организации"
-    },
-        {
-            "id": 3598919.0,
-            "state": "EXECUTED",
-            "date": "2020-12-06T23:00:58Z",
-            "amount": 29740.0,
-            "currency_name": "Peso",
-            "currency_code": "COP",
-            "from": "Discover 3172601889670065",
-            "to": "Discover 0720428384694643",
-            "description": "Перевод с карты на карту"
-        }]
-    result = get_data_from_excel(os.path.join(PATH_TO_DATA, 'transactions_excel.xlsx'))
+    string_data = StringIO(
+        """            id     state                  date   amount  
+0     650703.0  EXECUTED  2023-09-05T11:30:32Z  16210.0
+1     3598919.0  EXECUTED  2020-12-06T23:00:58Z  29740.0"""
+    )
+
+    mock_reader.return_value = pd.read_csv(string_data, sep=";")
+    result = get_data_from_excel(os.path.join(PATH_TO_DATA, "transactions_excel.xlsx"))
     expected_result = [
-        {'id': 650703.0, 'state': 'EXECUTED', 'date': '2023-09-05T11:30:32Z', 'amount': 16210.0, 'currency_name': 'Sol',
-         'currency_code': 'PEN', 'from': 'Счет 58803664561298323391', 'to': 'Счет 39745660563456619397',
-         'description': 'Перевод организации'},
-        {'id': 3598919.0, 'state': 'EXECUTED', 'date': '2020-12-06T23:00:58Z', 'amount': 29740.0,
-         'currency_name': 'Peso', 'currency_code': 'COP', 'from': 'Discover 3172601889670065',
-         'to': 'Discover 0720428384694643', 'description': 'Перевод с карты на карту'}]
+        {
+            "            id     state                  date   amount  ": "0     650703.0  EXECUTED  2023-09-05T11:30:32Z  16210.0"
+        },
+        {
+            "            id     state                  date   amount  ": "1     3598919.0  EXECUTED  2020-12-06T23:00:58Z  29740.0"
+        },
+    ]
     assert result == expected_result
