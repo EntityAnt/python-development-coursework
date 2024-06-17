@@ -6,7 +6,7 @@ def filter_for_dict(list_dict: list[dict], state: str = "EXECUTED") -> list[dict
     return [i for i in list_dict if i.get("state") == state]
 
 
-def sort_list_to_date(list_dict: list[dict], reverse: bool = True) -> list[dict]:
+def sort_list_to_date(list_dict: list[dict], reverse: bool = False) -> list[dict]:
     """Принимает список словарей и возвращает новый список, в котором исходные словари отсортированы
     по убыванию даты (ключ date). Второй аргумент необязательный задает порядок сортировки (убывание, возрастание)."""
 

@@ -1,6 +1,8 @@
+import csv
 import json
 import os
 import re
+import pandas as pd
 from collections import defaultdict
 from datetime import datetime
 
@@ -86,6 +88,27 @@ def search_in_descriptions(list_dict: list[dict], word: str) -> list[dict]:
             continue
     return result
 
+def get_data_from_csv(file_name: str) -> list[dict]:
+    """Читает данные и csv-файла и возвращает список словарей."""
+    with open(file_name, "r", encoding="utf-8") as file:
+        reader = csv.reader(file, delimiter=";")
+        header = next(reader)
+        result = []
+        for row in reader:
+            row_dict = dict()
+            for idx, item in enumerate(header):
+                row_dict[item] = row[idx]
+            result.append(row_dict)
+    return result
+
+
+def get_data_from_excel(file_name: str) -> list[dict]:
+    """Читает данные и excel-файла и возвращает список словарей."""
+
+    res = pd.read_excel(file_name).to_json(orient="records", indent=4, force_ascii=False)
+    return json.loads(res)
+
+
 
 def statistics_by_states(list_dict: list[dict], states: dict) -> dict:
     """ Принимает список словарей с данными о банковских операциях и словарь категорий операций,
@@ -98,5 +121,6 @@ def statistics_by_states(list_dict: list[dict], states: dict) -> dict:
                 result_dict[state] += 1
 
     return dict(result_dict)
+
 
 
