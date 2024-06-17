@@ -1,5 +1,6 @@
 from typing import Generator
 
+
 def filter_by_currency(transactions_list: list[dict], currency: str) -> Generator:
     """Принимает список словарей с банковскими операциями, возвращает итератор,
     который выдает по очереди операции, в которых указана заданная валюта.

@@ -2,10 +2,10 @@ import csv
 import json
 import os
 import re
-import pandas as pd
 from collections import defaultdict
 from datetime import datetime
 
+import pandas as pd
 from dotenv import load_dotenv
 
 from src.external_api import currency_exchange_rate
@@ -56,10 +56,7 @@ def get_data_from_json(path: str) -> list[dict]:
         logger.warning("Файл пустой или неверный формат файла")
         return []
 
-
     return json_data
-
-
 
 
 def get_amount(transaction: dict) -> float:
@@ -75,18 +72,19 @@ def get_amount(transaction: dict) -> float:
 
 
 def search_in_descriptions(list_dict: list[dict], word: str) -> list[dict]:
-    """ Принимает список словарей с данными о банковских операциях и строку поиска,
+    """Принимает список словарей с данными о банковских операциях и строку поиска,
     возвращает список словарей, у которых в описании есть данная строка."""
     result = []
     for item in list_dict:
-        description = item.get('description')
+        description = item.get("description")
         try:
-            match = re.search(fr'{word}', description, flags=re.IGNORECASE)
+            match = re.search(rf"{word}", description, flags=re.IGNORECASE)
             if match:
                 result.append(item)
-        except Exception as ex:
+        except Exception:
             continue
     return result
+
 
 def get_data_from_csv(file_name: str) -> list[dict]:
     """Читает данные и csv-файла и возвращает список словарей."""
@@ -109,18 +107,14 @@ def get_data_from_excel(file_name: str) -> list[dict]:
     return json.loads(res)
 
 
-
 def statistics_by_states(list_dict: list[dict], states: dict) -> dict:
-    """ Принимает список словарей с данными о банковских операциях и словарь категорий операций,
+    """Принимает список словарей с данными о банковских операциях и словарь категорий операций,
     возвращает словарь, в котором ключи — это названия категорий, а значения — это количество операций в каждой
     категории"""
     result_dict = defaultdict(int)
-    for state in states.get('state'):
+    for state in states.get("state"):
         for item in list_dict:
-            if state == item.get('state'):
+            if state == item.get("state"):
                 result_dict[state] += 1
 
     return dict(result_dict)
-
-
-

@@ -10,7 +10,7 @@ def get_card_number_mask(num_card: str) -> str:
     """Функция принимает на вход номер карты и возвращает ее маску,
     в формате XXXX XX** **** XXXX"""
     result = f"{num_card[:4]} {num_card[4:6]}** **** {num_card[-4:]}"
-    logger.info(f"Создана маска для карты: {result}")
+    # logger.info(f"Создана маска для карты: {result}")
     return result
 
 
@@ -18,7 +18,7 @@ def get_account_mask(account: str) -> str:
     """Функция принимает на вход номер счета и возвращает его маску, в формате
     **XXXX"""
     result = f"**{account[-4:]}"
-    logger.info(f"Создана маска для счета: {result}")
+    # logger.info(f"Создана маска для счета: {result}")
     return result
 
 
