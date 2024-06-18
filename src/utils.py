@@ -107,14 +107,14 @@ def get_data_from_excel(file_name: str) -> list[dict]:
     return json.loads(res)
 
 
-def statistics_by_states(list_dict: list[dict], states: dict) -> dict:
+def statistics_by_descriptions(list_dict: list[dict], descriptions: dict) -> dict:
     """Принимает список словарей с данными о банковских операциях и словарь категорий операций,
     возвращает словарь, в котором ключи — это названия категорий, а значения — это количество операций в каждой
     категории"""
     result_dict = defaultdict(int)
-    for state in states.get("state"):
+    for description in descriptions.keys():
         for item in list_dict:
-            if state == item.get("state"):
-                result_dict[state] += 1
+            if description == item.get("description"):
+                result_dict[description] += 1
 
     return dict(result_dict)

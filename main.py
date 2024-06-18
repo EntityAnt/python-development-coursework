@@ -4,7 +4,8 @@ from dotenv import load_dotenv
 
 # from src.logger import setup_logging
 from src.processing import filter_for_dict, sort_list_to_date
-from src.utils import get_data_from_csv, get_data_from_excel, get_data_from_json, search_in_descriptions
+from src.utils import get_data_from_csv, get_data_from_excel, get_data_from_json, search_in_descriptions, \
+    statistics_by_descriptions
 from src.widget import get_date_from_str, get_number_from_string
 
 load_dotenv()
@@ -116,3 +117,10 @@ def main():
 
 if __name__ == "__main__":
     main()
+    # list_dict = get_data_from_excel(os.path.join(PATH_TO_DATA, "transactions_excel.xlsx"))
+    # print(statistics_by_descriptions(list_dict, descriptions={'Перевод организации': 0,
+    #                                                           'Перевод с карты на карту': 0,
+    #                                                           'Открытие вклада': 0,
+    #                                                           'Перевод со счета на счет': 0}))
+
+
