@@ -4,6 +4,7 @@ from unittest.mock import patch
 from dotenv import load_dotenv
 
 from src.external_api import currency_exchange_rate
+from src.utils import get_data_from_csv
 
 load_dotenv()
 headers = {"apikey": os.getenv("API_KEY_FOR_APILAYER")}
@@ -20,3 +21,5 @@ def test_currency_exchange_rate(mock_get):
     }
     assert currency_exchange_rate("USD") == 88.848824
     mock_get.assert_called_once_with("https://api.apilayer.com/fixer/latest?base=USD&symbols=RUB", params=headers)
+
+

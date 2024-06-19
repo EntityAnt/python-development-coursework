@@ -1,12 +1,16 @@
 import os
+from io import StringIO
+from unittest.mock import patch
 
+import pandas as pd
 import pytest
 from dotenv import load_dotenv
 
-from src.utils import get_financial_transactions_data
+from src.utils import get_data_from_csv, get_data_from_excel, get_financial_transactions_data
 
 load_dotenv()
 PATH_TO_OPERATION_JSON = os.getenv("PATH_TO_OPERATION_JSON")
+PATH_TO_DATA = os.getenv("PATH_TO_DATA")
 TRASACTIONS_LIST = [
     {"amount": "31957.58", "currency": {"name": "руб.", "code": "RUB"}},
     {"amount": "8221.37", "currency": {"name": "USD", "code": "USD"}},
@@ -117,3 +121,61 @@ TRASACTIONS_LIST = [
 )
 def test_get_financial_transaction_data(path, expected) -> None:
     assert get_financial_transactions_data(path) == expected
+
+
+@patch("csv.reader")
+def test_get_data_from_csv(mock_reader):
+    # Настраиваем mock_reader чтобы он возвращал нужный результат
+    mock_reader.return_value = iter(
+        [
+            ["id", "state", "date", "amount", "currency_name", "currency_code", "from", "to", "description"],
+            [
+                "650703",
+                "EXECUTED",
+                "2023-09-05T11:30:32Z",
+                "16210",
+                "SoL",
+                "PEN",
+                "Счет 58803664651298323391",
+                "Счет 39746506635466619397",
+                "Перевод организации",
+            ],
+        ]
+    )
+
+    result = get_data_from_csv(os.path.join(PATH_TO_DATA, "transactions.csv"))
+    expected_result = [
+        {
+            "id": "650703",
+            "state": "EXECUTED",
+            "date": "2023-09-05T11:30:32Z",
+            "amount": "16210",
+            "currency_name": "SoL",
+            "currency_code": "PEN",
+            "from": "Счет 58803664651298323391",
+            "to": "Счет 39746506635466619397",
+            "description": "Перевод организации",
+        }
+    ]
+    assert result == expected_result
+
+
+@patch("pandas.read_excel")
+def test_get_data_from_excel(mock_reader):
+    string_data = StringIO(
+        """            id     state                  date   amount  
+0     650703.0  EXECUTED  2023-09-05T11:30:32Z  16210.0
+1     3598919.0  EXECUTED  2020-12-06T23:00:58Z  29740.0"""
+    )
+
+    mock_reader.return_value = pd.read_csv(string_data, sep=";")
+    result = get_data_from_excel(os.path.join(PATH_TO_DATA, "transactions_excel.xlsx"))
+    expected_result = [
+        {
+            "            id     state                  date   amount  ": "0     650703.0  EXECUTED  2023-09-05T11:30:32Z  16210.0"
+        },
+        {
+            "            id     state                  date   amount  ": "1     3598919.0  EXECUTED  2020-12-06T23:00:58Z  29740.0"
+        },
+    ]
+    assert result == expected_result

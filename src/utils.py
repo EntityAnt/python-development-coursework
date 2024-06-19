@@ -1,7 +1,9 @@
+import csv
 import json
 import os
 from datetime import datetime
 
+import pandas as pd
 from dotenv import load_dotenv
 
 from src.external_api import currency_exchange_rate
@@ -9,6 +11,7 @@ from src.logger import setup_logging
 
 load_dotenv()
 PATH_TO_OPERATION_JSON = os.getenv("PATH_TO_OPERATION_JSON")
+PATH_TO_DATA = os.getenv("PATH_TO_DATA")
 
 logger = setup_logging(datetime.today().strftime("%Y-%m-%d"))
 
@@ -45,3 +48,24 @@ def get_amount(transaction: dict) -> float:
         result = round(float(transaction["amount"]) * rate, 2)
         logger.info(f"Получена транзакция на сумму {result} руб.")
     return result
+
+
+def get_data_from_csv(file_name: str) -> list[dict]:
+    """Читает данные и csv-файла и возвращает список словарей."""
+    with open(file_name, "r", encoding="utf-8") as file:
+        reader = csv.reader(file, delimiter=";")
+        header = next(reader)
+        result = []
+        for row in reader:
+            row_dict = dict()
+            for idx, item in enumerate(header):
+                row_dict[item] = row[idx]
+            result.append(row_dict)
+    return result
+
+
+def get_data_from_excel(file_name: str) -> list[dict]:
+    """Читает данные и excel-файла и возвращает список словарей."""
+
+    res = pd.read_excel(file_name).to_json(orient="records", indent=4, force_ascii=False)
+    return json.loads(res)
