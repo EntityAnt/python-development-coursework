@@ -117,10 +117,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    # list_dict = get_data_from_excel(os.path.join(PATH_TO_DATA, "transactions_excel.xlsx"))
-    # print(statistics_by_descriptions(list_dict, descriptions={'Перевод организации': 0,
-    #                                                           'Перевод с карты на карту': 0,
-    #                                                           'Открытие вклада': 0,
-    #                                                           'Перевод со счета на счет': 0}))
-
-
