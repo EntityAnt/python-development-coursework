@@ -8,7 +8,7 @@ def get_number_from_string(string: str) -> str:
     Функция принимает строку с информацией — тип карты/счета и номер карты/счета.
     Возвращает исходную строку с замаскированным номером карты/счета.
     """
-    if type(string) is str:
+    if string is  not None:
         tmp_list = string.strip().split()
         if tmp_list[0] == "Счет":
             return f"Счет {masks.get_account_mask(tmp_list[-1])}"
